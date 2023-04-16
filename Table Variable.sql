@@ -34,5 +34,5 @@ SELECT * FROM @vSalesOrderHeader
 
 /*
 	ให้ทำการ Display Estimate Execution Plan จะพบว่ากลไกคาดคะเนจำนวนแถวข้อมูล
-	Cardinality Estimator ใช้ค่าคงที่เป็น 1 แถวข้อมูลซึ่งคาดเคลื่อนจากความจริงมาก
+	(Cardinality Estimator) ใช้ค่าคงที่เป็น 1 แถวข้อมูลซึ่งคาดเคลื่อนจากความจริงมาก
 */
