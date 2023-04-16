@@ -2,42 +2,31 @@
 USE AdventureWorks;
 GO
 
-CREATE TABLE #TempSalesOrderHeader 
+CREATE TABLE Sales.MiniOrderDetail
 (
-	SalesOrderID int NOT NULL
-,	OrderDate datetime NOT NULL
-,	DueDate datetime NOT NULL
-,	ShipDate datetime NULL
-,	SalesOrderNumber  nvarchar(25) NOT NULL
-,	PurchaseOrderNumber nvarchar(25) NULL
-,	AccountNumber nvarchar(15) NOT NULL
-,	CustomerID int NOT NULL
-,	SalesPersonID int NULL
-,	TerritoryID int NULL
-,	BillToAddressID int NOT NULL
-,	ShipToAddressID int NOT NULL
-,	ShipMethodID int NOT NULL
-,	SubTotal money NOT NULL
-,	TaxAmt money NOT NULL
-,	Freight money NOT NULL
-,	TotalDue  money NOT NULL
-);
+	SalesOrderID int FOREIGN KEY REFERENCES Sales.SalesOrderHeader(SalesOrderID) NOT NULL
+,	ProductID int FOREIGN KEY REFERENCES Production.Product(ProductID) NOT NULL
+,	OrderQty smallint NOT NULL
+)
 GO
 
-INSERT INTO #TempSalesOrderHeader
-SELECT 
-	SalesOrderID,OrderDate,DueDate,ShipDate,SalesOrderNumber
-,	PurchaseOrderNumber,AccountNumber,CustomerID,SalesPersonID
-,	TerritoryID,BillToAddressID,ShipToAddressID,ShipMethodID
-,	SubTotal,TaxAmt,Freight,TotalDue
-FROM Sales.SalesOrderHeader;
+--Valid batch
+INSERT INTO Sales.MiniOrderDetail VALUES(75123,1,10);
+INSERT INTO Sales.MiniOrderDetail VALUES(75123,2,10);
+GO
+--invalid batch
+INSERT INTO Sales.MiniOrderDetail VALUE(75123,1,10);
+INSERT INTO Sales.MiniOrderDetail VALUES(75123,2,10);
 GO
 
-/* 
-	ให้ทำการ Run ตั้งแต่ต้นจนถึงจุดนี้ จากนั้น
+--Runtime Error batch
+INSERT INTO Sales.MiniOrderDetail VALUES(00000,1,10);
+INSERT INTO Sales.MiniOrderDetail VALUES(75123,3,10);
+GO
 
-	ให้ทำการ Display Estimate Execution Plan คำสั่ง SELECT ด้านล่าง
-	จะพบว่าการคาดคะเนจำนวนแถวข้อมูล มีการใช้งาน Statistics 
-*/
+SELECT * FROM Sales.MiniOrderDetail;
+GO
 
-SELECT * FROM #TempSalesOrderHeader;
+IF OBJECT_ID('Sales.MiniOrderDetail') IS NOT NULL
+	DROP TABLE Sales.MiniOrderDetail;
+GO
