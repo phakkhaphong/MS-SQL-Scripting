@@ -1,8 +1,8 @@
-﻿--Table Variable
+--Temporary Table
 USE AdventureWorks;
 GO
 
-DECLARE @vSalesOrderHeader TABLE
+CREATE TABLE #TempSalesOrderHeader 
 (
 	SalesOrderID int NOT NULL
 ,	OrderDate datetime NOT NULL
@@ -22,19 +22,22 @@ DECLARE @vSalesOrderHeader TABLE
 ,	Freight money NOT NULL
 ,	TotalDue  money NOT NULL
 );
+GO
 
-INSERT INTO @vSalesOrderHeader
+INSERT INTO #TempSalesOrderHeader
 SELECT 
 	SalesOrderID,OrderDate,DueDate,ShipDate,SalesOrderNumber
 ,	PurchaseOrderNumber,AccountNumber,CustomerID,SalesPersonID
 ,	TerritoryID,BillToAddressID,ShipToAddressID,ShipMethodID
 ,	SubTotal,TaxAmt,Freight,TotalDue
 FROM Sales.SalesOrderHeader;
+GO
 
+/* 
+	ให้ทำการ Run ตั้งแต่ต้นจนถึงจุดนี้ จากนั้น
 
-SELECT * FROM @vSalesOrderHeader;
-
-/*
-	ให้ทำการ Display Estimate Execution Plan ในคราวเดียว เพราะเป็นตัวแปรจะพบว่ากลไกคาดคะเนจำนวนแถวข้อมูล
-	Cardinality Estimator ใช้ค่าคงที่เป็น 1 แถวข้อมูลซึ่งคาดเคลื่อนจากความจริงมาก
+	ให้ทำการ Display Estimate Execution Plan คำสั่ง SELECT ด้านล่าง
+	จะพบว่าการคาดคะเนจำนวนแถวข้อมูล มีการใช้งาน Statistics 
 */
+
+SELECT * FROM #TempSalesOrderHeader;
