@@ -1,5 +1,7 @@
 ﻿USE master;  
 GO  
+
+/*
   
 EXEC sp_addmessage
 	@msgnum = 55055 
@@ -11,6 +13,8 @@ EXEC sp_addmessage
         '
 ,	@lang = 'us_english'; 
 GO
+
+*/
 
 SELECT * FROM sys.messages WHERE message_id=55055;
 GO
@@ -27,3 +31,5 @@ RAISERROR
 	,16,111,8999,'AKE!!!'
 	);
 GO
+
+--EXEC sp_dropmessage 55055
