@@ -27,6 +27,6 @@ GO
 SELECT * FROM Sales.MiniOrderDetail;
 GO
 
-IF OBJECT_ID('Sales.MiniOrderDetail') IS NOT NULL
-	DROP TABLE Sales.MiniOrderDetail;
+--DROP Object
+DROP TABLE IF EXISTS Sales.MiniOrderDetail;
 GO
