@@ -101,11 +101,14 @@ BEGIN TRY
 		UPDATE Production.MiniProducts SET Quantity=Quantity-3 WHERE productid=860;
 		
 		DECLARE @amount money 
+		DECLARE @PO varchar(25)
+
+		SELECT @PO=PurchaseOrderNumber FROM Sales.MiniOrders WHERE OrderID=@@IDENTITY;
 
 		SELECT @amount=(OD.UnitPrice*OD.UnitPrice*(1-OD.Discount)) FROM Sales.MiniOrderDetails as OD
 		WHERE OrderID=@@IDENTITY;
 
-		IF @amount>1000 ROLLBACK TRANSACTION
+		IF @amount>1000 AND @PO IS NULL ROLLBACK TRANSACTION
 
 	COMMIT TRANSACTION
 END TRY
