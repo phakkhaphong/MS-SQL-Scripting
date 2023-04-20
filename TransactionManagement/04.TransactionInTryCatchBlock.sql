@@ -1,4 +1,4 @@
-﻿/*
+/*
 --Create MiniProducts Table
 
 SELECT 
@@ -48,6 +48,7 @@ CREATE TABLE Sales.MiniOrders
 (
 	OrderID int IDENTITY(1,1) NOT NULL CONSTRAINT PK_MiniOrders PRIMARY KEY CLUSTERED 
 ,	CustID int NULL CONSTRAINT FK_MiniOrders_MiniCustomers FOREIGN KEY(CustID) REFERENCES Sales.MiniCustomers (CustID)
+,	PurchaseOrderNumber varchar(25) NULL
 ,	OrderDate datetime NOT NULL
 ,	Freight money NOT NULL CONSTRAINT DFT_Orders_Freight  DEFAULT ((0))
 ) ;
@@ -87,8 +88,8 @@ BEGIN TRY
 			'Data Meccanica Co.,Ltd.','Phakkhaphong K.','Owner'
 		,	'109/6 M9','Paris',NULL,10058,'France','(66) 789-0123'
 		)
-		INSERT INTO Sales.MiniOrders (CustID,OrderDate,Freight)
-		VALUES (@@IDENTITY,GETDATE(),32.38)
+		INSERT INTO Sales.MiniOrders (CustID,PurchaseOrderNumber,OrderDate,Freight)
+		VALUES (@@IDENTITY,NULL,GETDATE(),32.38)
 
 		INSERT INTO Sales.MiniOrderDetails 
 		(OrderID,ProductID,UnitPrice,Quantity,Discount)
@@ -98,6 +99,14 @@ BEGIN TRY
 		UPDATE Production.MiniProducts SET Quantity=Quantity-30 WHERE productid=854;
 		UPDATE Production.MiniProducts SET Quantity=Quantity-2 WHERE productid=859;
 		UPDATE Production.MiniProducts SET Quantity=Quantity-3 WHERE productid=860;
+		
+		DECLARE @amount money 
+
+		SELECT @amount=(OD.UnitPrice*OD.UnitPrice*(1-OD.Discount)) FROM Sales.MiniOrderDetails as OD
+		WHERE OrderID=@@IDENTITY;
+
+		IF @amount>1000 ROLLBACK TRANSACTION
+
 	COMMIT TRANSACTION
 END TRY
 BEGIN CATCH
