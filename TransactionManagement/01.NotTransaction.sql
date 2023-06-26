@@ -1,4 +1,7 @@
-﻿/*
+USE AdventureWorks
+GO
+
+/*
 --Create MiniProducts Table
 
 SELECT 
