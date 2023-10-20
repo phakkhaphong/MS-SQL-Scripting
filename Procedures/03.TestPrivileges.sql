@@ -1,5 +1,8 @@
-﻿USE AdventureWorks;
+USE AdventureWorks;
 GO
+
+--Test Backup from High Privilege
+BACKUP DATABASE AdventureWorks TO DISK='D:\Backups\adv.bak';
 
 --Create Database user without login and not grant any permission
 CREATE USER NoPrivileges WITHOUT LOGIN;
