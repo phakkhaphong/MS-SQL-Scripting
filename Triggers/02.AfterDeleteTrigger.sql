@@ -1,4 +1,4 @@
-﻿--Create After Delete Trigger
+--Create After Delete Trigger
 USE AdventureWorks;
 GO
 
@@ -15,6 +15,8 @@ BEGIN
 END;
 
 --Test After Delete Trigger
+SELECT * FROM Sales.SalesTerritoryHistory
+WHERE BusinessEntityID=283
 
 DELETE Sales.SalesTerritoryHistory WHERE BusinessEntityID=283
 
