@@ -1,11 +1,11 @@
-﻿--Create Recursive Procedure
-CREATE PROCEDURE dbo.udpTestRecursive
+--Create Recursive Procedure
+CREATE OR ALTER PROCEDURE dbo.udpTestRecursive
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	PRINT 'Nest Level ' + CAST(@@NESTLEVEL as varchar(3))
-	IF @@NESTLEVEL=20 RETURN
+	--IF @@NESTLEVEL=20 RETURN
 
 	EXEC dbo.udpTestRecursive
 
